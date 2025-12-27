@@ -1,0 +1,390 @@
+/* ===============================
+   HOW-IT-WORKS css
+================================ */
+
+/* Ensure consistent spacing and sizing */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ========== ROOT COLORS ========== */
+/* Theme variables reused across the page */
+:root {
+  --navy: #111827;
+  --navy-deep: #020617;
+  --orange: #ff7a1a;
+  --orange-dark: #e25f05;
+  --soft-blue: #4f46e5;
+  --soft-pink: #fb7185;
+  --white: #ffffff;
+
+  --card-border: rgba(226,232,240,0.9);
+  --muted: #4b5563;
+
+  --shadow-md: 0 10px 24px rgba(148,163,184,0.35);
+  --shadow-lg: 0 16px 34px rgba(148,163,184,0.55);
+}
+
+/* ========== BODY ========== */
+/* Global typography and background */
+body {
+  font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--navy);
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 0% 0%, rgba(79,70,229,0.18), transparent 55%),
+    radial-gradient(circle at 100% 0%, rgba(251,113,133,0.22), transparent 55%),
+    linear-gradient(180deg, #fef9ff, #eef2ff);
+}
+
+/* ========== TOP NAV ========== */
+/* Shared public header layout */
+.top-nav {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 22px 45px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  background: transparent;
+  position: relative;
+}
+
+/* Logo alignment */
+.nav-left {
+  display: flex;
+  align-items: center;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+/* Logo sizing */
+.main-logo {
+  height: 135px;
+  width: auto;
+  object-fit: contain;
+}
+
+/* Navigation links container */
+.nav-links {
+  display: flex;
+  gap: 28px;
+  align-items: center;
+  font-size: 17px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+/* Base link style */
+.nav-links a {
+  text-decoration: none;
+  color: var(--navy);
+  font-weight: 500;
+  padding-bottom: 4px;
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+/* Animated underline */
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  height: 2px;
+  width: 0;
+  background: var(--orange);
+  transition: width 0.2s ease;
+}
+
+/* Hover and active page state */
+.nav-links a:hover,
+.nav-links a.active {
+  color: var(--orange-dark);
+}
+
+.nav-links a:hover::after,
+.nav-links a.active::after {
+  width: 100%;
+}
+
+/* Call-to-action button (if used) */
+.nav-cta {
+  padding: 9px 18px;
+  border-radius: 999px;
+  background: var(--orange);
+  color: #fff !important;
+  font-weight: 700;
+  box-shadow: 0 10px 18px rgba(255,122,26,0.25);
+  transition: transform 0.15s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.nav-cta:hover {
+  background: var(--orange-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 14px 22px rgba(255,122,26,0.30);
+}
+
+/* ========== HERO SECTION ========== */
+/* Page introduction section */
+.hero {
+  max-width: 1100px;
+  margin: 10px auto 10px;
+  padding: 0 24px 30px;
+  position: relative;
+  min-height: 270px;
+}
+
+/* Decorative background glow */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 22% 10%;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(79,70,229,0.16), transparent 60%),
+    radial-gradient(circle at 80% 10%, rgba(251,113,133,0.20), transparent 60%);
+  opacity: 0.95;
+  z-index: -2;
+}
+
+/* Hero alignment */
+.hero-inner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 270px;
+}
+
+/* Glass-style hero card */
+.hero-text {
+  max-width: 760px;
+  text-align: center;
+  padding: 22px 18px;
+  border-radius: 22px;
+
+  background: rgba(255,255,255,0.55);
+  border: 1px solid rgba(226,232,240,0.75);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 18px 44px rgba(148,163,184,0.35);
+}
+
+/* Hero title */
+.hero-text h1 {
+  font-size: 44px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--navy-deep);
+  margin-bottom: 12px;
+}
+
+/* Hero subtitle */
+.hero-subtitle {
+  font-size: 15px;
+  color: var(--muted);
+  margin: 0 auto 14px;
+  max-width: 720px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.88);
+  border: 1px solid rgba(226,232,240,0.85);
+  box-shadow: 0 8px 18px rgba(148,163,184,0.30);
+}
+
+/* Capability chips */
+.hero-chips {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  background: rgba(255,255,255,0.9);
+  border: 1px solid rgba(226,232,240,0.75);
+  box-shadow: 0 6px 14px rgba(15,23,42,0.10);
+  color: var(--navy-deep);
+}
+
+.chip-icon {
+  font-size: 14px;
+}
+
+/* ========== STEPS SECTION ========== */
+/* Workflow steps grid */
+.steps-section {
+  max-width: 1100px;
+  margin: 0 auto 42px;
+  padding: 0 24px 10px;
+}
+
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+
+/* Stack steps on smaller screens */
+@media (max-width: 980px) {
+  .steps-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Individual step card */
+.step-card {
+  background: rgba(255,255,255,0.95);
+  border-radius: 20px;
+  padding: 22px 20px 24px;
+  text-align: center;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--card-border);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+/* Hover glow overlay */
+.step-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 20% 10%, rgba(79,70,229,0.10), transparent 45%),
+              radial-gradient(circle at 80% 0%, rgba(249,115,22,0.16), transparent 45%);
+  opacity: 0;
+  z-index: 0;
+  transition: opacity 0.2s ease;
+}
+
+.step-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+  border-color: rgba(255,122,26,0.45);
+}
+
+.step-card:hover::before {
+  opacity: 1;
+}
+
+/* Keep content above overlay */
+.step-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Step number badge */
+.step-badge {
+  position: absolute;
+  top: 14px;
+  left: 16px;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(79,70,229,0.10);
+  color: var(--soft-blue);
+}
+
+/* Step icon */
+.step-icon-circle {
+  width: 66px;
+  height: 66px;
+  border-radius: 999px;
+  margin: 10px auto 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  background: radial-gradient(circle at 30% 0%, #fee2e2, #f97316);
+  color: #111827;
+  box-shadow: 0 10px 18px rgba(248,113,113,0.32);
+}
+
+.step-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--navy-deep);
+  margin-bottom: 8px;
+}
+
+.step-text {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+/* ========== SUMMARY STRIP ========== */
+/* Bottom process summary */
+.summary-strip {
+  max-width: 1100px;
+  margin: 0 auto 44px;
+  padding: 0 24px 18px;
+  text-align: center;
+  font-size: 14px;
+  color: #374151;
+}
+
+.summary-strip p {
+  background: rgba(255,255,255,0.92);
+  border-radius: 999px;
+  padding: 10px 20px;
+  display: inline-block;
+  border: 1px solid rgba(226,232,240,0.8);
+  box-shadow: 0 6px 14px rgba(148,163,184,0.28);
+}
+
+/* ========== FOOTER ========== */
+/* Shared footer styling */
+.footer {
+  text-align: center;
+  font-size: 12px;
+  color: #6b7280;
+  padding: 26px 0 20px;
+  border-top: 1px solid rgba(226,232,240,0.8);
+  background: rgba(255,255,255,0.5);
+}
+
+/* ========== SMALL SCREEN POLISH ========== */
+/* Adjust spacing and text on mobile */
+@media (max-width: 720px) {
+  .top-nav {
+    padding: 16px 18px;
+  }
+
+  .main-logo {
+    height: 95px;
+  }
+
+  .nav-links {
+    gap: 16px;
+    font-size: 15px;
+  }
+
+  .hero-text h1 {
+    font-size: 34px;
+  }
+
+  .hero {
+    min-height: 240px;
+  }
+
+  .hero-inner {
+    min-height: 240px;
+  }
+}
