@@ -1,0 +1,108 @@
+CREATE TABLE departments (
+  department_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name          TEXT NOT NULL UNIQUE
+);
+CREATE TABLE sqlite_sequence(name,seq);
+CREATE TABLE users (
+  user_id       INTEGER PRIMARY KEY AUTOINCREMENT,
+  email         TEXT NOT NULL UNIQUE,
+  name          TEXT NOT NULL,
+  role          TEXT NOT NULL CHECK (role IN ('admin','employee')),
+  department_id INTEGER NOT NULL,
+  created_at    DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, password TEXT, vm_ip TEXT,
+  FOREIGN KEY (department_id)
+    REFERENCES departments(department_id)
+    ON UPDATE CASCADE ON DELETE RESTRICT
+);
+CREATE INDEX idx_users_department ON users(department_id);
+CREATE TABLE email_templates (
+  template_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name        TEXT NOT NULL,
+  subject     TEXT NOT NULL,
+  body_html   TEXT NOT NULL,
+  is_active   INTEGER NOT NULL DEFAULT 1 CHECK (is_active IN (0,1)),
+  created_at  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+, sender_name TEXT, sender_email TEXT);
+CREATE TABLE campaigns (
+  campaign_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name        TEXT NOT NULL,
+  start_at    DATETIME NOT NULL,
+  end_at      DATETIME NOT NULL,
+  status      TEXT NOT NULL CHECK (status IN ('scheduled','running','completed','canceled')),
+  created_by  INTEGER NOT NULL,
+  template_id INTEGER NOT NULL,
+  created_at  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, description TEXT,
+  FOREIGN KEY (created_by)
+    REFERENCES users(user_id)
+    ON UPDATE CASCADE ON DELETE RESTRICT,
+  FOREIGN KEY (template_id)
+    REFERENCES email_templates(template_id)
+    ON UPDATE CASCADE ON DELETE RESTRICT
+);
+CREATE INDEX idx_campaigns_template ON campaigns(template_id);
+CREATE TABLE campaign_targets (
+  target_id         INTEGER PRIMARY KEY AUTOINCREMENT,
+  campaign_id       INTEGER NOT NULL,
+  user_id           INTEGER NOT NULL,
+  unique_link_token TEXT NOT NULL UNIQUE,
+  sent_at           DATETIME,
+  delivery_status   TEXT NOT NULL DEFAULT 'pending',
+  FOREIGN KEY (campaign_id)
+    REFERENCES campaigns(campaign_id)
+    ON UPDATE CASCADE ON DELETE CASCADE,
+  FOREIGN KEY (user_id)
+    REFERENCES users(user_id)
+    ON UPDATE CASCADE ON DELETE CASCADE
+);
+CREATE INDEX idx_targets_campaign ON campaign_targets(campaign_id);
+CREATE INDEX idx_targets_user ON campaign_targets(user_id);
+CREATE TABLE email_events (
+  event_id   INTEGER PRIMARY KEY AUTOINCREMENT,
+  target_id  INTEGER NOT NULL,
+  event_type TEXT NOT NULL,
+  ip         TEXT,
+  user_agent TEXT,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (target_id)
+    REFERENCES campaign_targets(target_id)
+    ON UPDATE CASCADE ON DELETE CASCADE
+);
+CREATE INDEX idx_email_events_target ON email_events(target_id);
+CREATE TABLE warning_decisions (
+  decision_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  target_id   INTEGER NOT NULL,
+  decision    TEXT NOT NULL CHECK (decision IN ('back','continue')),
+  created_at  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (target_id)
+    REFERENCES campaign_targets(target_id)
+    ON UPDATE CASCADE ON DELETE CASCADE
+);
+CREATE INDEX idx_warning_target ON warning_decisions(target_id);
+CREATE TABLE awareness_views (
+  view_id    INTEGER PRIMARY KEY AUTOINCREMENT,
+  target_id  INTEGER NOT NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (target_id)
+    REFERENCES campaign_targets(target_id)
+    ON UPDATE CASCADE ON DELETE CASCADE
+);
+CREATE INDEX idx_awareness_target ON awareness_views(target_id);
+CREATE TABLE quiz_attempts (
+  attempt_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  target_id  INTEGER NOT NULL,
+  score      INTEGER NOT NULL CHECK (score BETWEEN 0 AND 5),
+  passed     INTEGER NOT NULL CHECK (passed IN (0,1)),
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (target_id)
+    REFERENCES campaign_targets(target_id)
+    ON UPDATE CASCADE ON DELETE CASCADE
+);
+CREATE INDEX idx_quiz_target ON quiz_attempts(target_id);
+CREATE TABLE remember_tokens (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    token TEXT NOT NULL UNIQUE,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+      ON DELETE CASCADE
+);
