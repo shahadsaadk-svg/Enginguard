@@ -1,0 +1,9 @@
+{
+    "require": {
+        "dompdf/dompdf": "^0.6.2", 
+        // PDF report generation
+
+        "phpmailer/phpmailer": "^7.0"
+        // SMTP email sending
+    }
+}
